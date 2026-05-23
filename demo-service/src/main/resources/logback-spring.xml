@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <!-- ── Console appender (keep standard output) ── -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} %-5level [demo] %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- ── In-memory appender (captured by /demo/logs API) ── -->
+  <appender name="IN_MEMORY"
+            class="com.platform.demo.logging.InMemoryLogAppender"/>
+
+  <!-- Application code: DEBUG and up, goes to both outputs -->
+  <logger name="com.platform.demo" level="DEBUG" additivity="false">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="IN_MEMORY"/>
+  </logger>
+
+  <!-- Spring framework: INFO and up -->
+  <logger name="org.springframework" level="INFO" additivity="false">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="IN_MEMORY"/>
+  </logger>
+
+  <!-- Root: WARN and up (reduce noise from 3rd-party libs) -->
+  <root level="WARN">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="IN_MEMORY"/>
+  </root>
+
+</configuration>

@@ -1,0 +1,14 @@
+**/build/
+**/.gradle/
+**/out/
+*.class
+*.jar
+*.war
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+logs/
+docker/volumes/

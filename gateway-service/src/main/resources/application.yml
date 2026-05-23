@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: gateway-service
+
+  # ---------------------------------------------------------------
+  # Import the shared credentials/config from the common config file.
+  # Path is relative to the working directory (the service root when
+  # running via ./gradlew bootRun from gateway-service/).
+  # Override at runtime with:
+  #   SPRING_CONFIG_IMPORT=optional:file:/config/common-config.yml
+  # ---------------------------------------------------------------
+  config:
+    import: "optional:file:../config/common-config.yml"
+
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+
+      # Add your backend service routes below.
+      # Example:
+      routes:
+        # - id: sample-backend
+        #   uri: ${SAMPLE_BACKEND_URI:http://localhost:8090}
+        #   predicates:
+        #     - Path=/api/sample/**
+        #   filters:
+        #     - StripPrefix=2
+
+server:
+  port: ${GATEWAY_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  level:
+    com.platform: DEBUG
+    org.springframework.cloud.gateway: INFO
+  pattern:
+    console: "%d{ISO8601} [%thread] %-5level [%X{traceId}/%X{spanId}] %logger{36} - %msg%n"

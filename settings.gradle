@@ -1,0 +1,3 @@
+rootProject.name = 'api-gateway-analytics-platform'
+include 'gateway-service', 'analytics-service', 'alert-service'
+include 'demo-service'

@@ -1,0 +1,99 @@
+# ==============================================================
+#  COMMON CONFIGURATION - API Gateway Analytics Platform
+#  All shared credentials and settings live here.
+#  Each microservice imports this file via spring.config.import.
+#
+#  TO USE: update the placeholder values or set the environment
+#  variables listed in ${...} expressions.
+#
+#  For local dev, run from each service directory so the
+#  relative path ../config/common-config.yml resolves correctly.
+# ==============================================================
+
+# ---------------------------------------------------------------
+# Apache Kafka
+# ---------------------------------------------------------------
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+  # ---------------------------------------------------------------
+  # Elasticsearch
+  # ---------------------------------------------------------------
+  elasticsearch:
+    uris: ${ELASTICSEARCH_URIS:http://localhost:9200}
+    username: ${ELASTICSEARCH_USERNAME:elastic}
+    password: ${ELASTICSEARCH_PASSWORD:changeme}
+    connection-timeout: 5s
+    socket-timeout: 30s
+
+  # ---------------------------------------------------------------
+  # PostgreSQL (analytics-service raw event storage)
+  # ---------------------------------------------------------------
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:analytics_db}
+    username: ${POSTGRES_USERNAME:analytics_user}
+    password: ${POSTGRES_PASSWORD:analytics_pass}
+    driver-class-name: org.postgresql.Driver
+
+  # ---------------------------------------------------------------
+  # Email / SMTP (alert-service notifications)
+  # ---------------------------------------------------------------
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:your-email@gmail.com}
+    password: ${SMTP_PASSWORD:your-app-password}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+# ---------------------------------------------------------------
+# Platform - Kafka Topic Names
+# ---------------------------------------------------------------
+platform:
+  kafka:
+    topics:
+      api-events: ${KAFKA_TOPIC_API_EVENTS:api-events}
+      api-events-dlq: ${KAFKA_TOPIC_API_EVENTS_DLQ:api-events-dlq}
+      analytics-events: ${KAFKA_TOPIC_ANALYTICS_EVENTS:analytics-events}
+
+  # ---------------------------------------------------------------
+  # Slack Notifications (alert-service)
+  # ---------------------------------------------------------------
+  slack:
+    webhook-url: ${SLACK_WEBHOOK_URL:https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK}
+    enabled: ${SLACK_NOTIFICATIONS_ENABLED:true}
+
+  # ---------------------------------------------------------------
+  # Email Notifications (alert-service)
+  # ---------------------------------------------------------------
+  email:
+    from: ${EMAIL_FROM:alerts@your-domain.com}
+    to: ${EMAIL_RECIPIENTS:team@your-domain.com}
+    enabled: ${EMAIL_NOTIFICATIONS_ENABLED:false}
+
+  # ---------------------------------------------------------------
+  # Alert Thresholds
+  # ---------------------------------------------------------------
+  alert:
+    latency-threshold-ms: ${ALERT_LATENCY_THRESHOLD_MS:5000}
+    error-rate-threshold: ${ALERT_ERROR_RATE_THRESHOLD:0.10}
+    traffic-spike-multiplier: ${ALERT_TRAFFIC_SPIKE_MULTIPLIER:3.0}
+    min-sample-size: ${ALERT_MIN_SAMPLE_SIZE:10}
+    cooldown-minutes: ${ALERT_COOLDOWN_MINUTES:5}
+
+  # ---------------------------------------------------------------
+  # OpenTelemetry Collector
+  # ---------------------------------------------------------------
+  otel:
+    endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4317}
+    service-name: ${OTEL_SERVICE_NAME:api-gateway-platform}
+
+  # ---------------------------------------------------------------
+  # Multi-Tenancy
+  # ---------------------------------------------------------------
+  multi-tenancy:
+    default-tenant-id: ${DEFAULT_TENANT_ID:default}
+    rate-limit-enabled: ${RATE_LIMIT_ENABLED:true}
+    default-rate-limit-per-minute: ${DEFAULT_RATE_LIMIT_PER_MINUTE:1000}

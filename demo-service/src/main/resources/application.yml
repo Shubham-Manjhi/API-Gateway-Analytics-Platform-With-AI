@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: api-gateway-analytics-demo
+
+  # Import common credentials — optional for this demo
+  config:
+    import: "optional:file:../config/common-config.yml"
+
+server:
+  port: 8888
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# Alert thresholds used by InMemoryMetricsStore
+platform:
+  alert:
+    latency-threshold-ms: 3000    # 3 s  (lower than prod to easily trigger alerts)
+    error-rate-threshold:  0.30   # 30%
+
+logging:
+  level:
+    com.platform.demo: INFO
+    org.springframework: WARN
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level %msg%n"

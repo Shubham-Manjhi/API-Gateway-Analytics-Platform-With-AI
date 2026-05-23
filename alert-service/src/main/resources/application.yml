@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: alert-service
+
+  config:
+    import: "optional:file:../config/common-config.yml"
+
+  kafka:
+    consumer:
+      group-id: alert-service-group
+      auto-offset-reset: earliest
+
+server:
+  port: ${ALERT_PORT:8082}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  level:
+    com.platform: DEBUG
+  pattern:
+    console: "%d{ISO8601} [%thread] %-5level [%X{traceId}/%X{spanId}] %logger{36} - %msg%n"

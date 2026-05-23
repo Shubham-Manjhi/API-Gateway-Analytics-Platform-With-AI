@@ -1,0 +1,17 @@
+{
+  "mappings": {
+    "properties": {
+      "tenantId":      { "type": "keyword" },
+      "endpoint":      { "type": "keyword" },
+      "windowStart":   { "type": "date", "format": "strict_date_optional_time" },
+      "windowEnd":     { "type": "date", "format": "strict_date_optional_time" },
+      "requestCount":  { "type": "long" },
+      "avgLatencyMs":  { "type": "double" },
+      "p95LatencyMs":  { "type": "double" },
+      "p99LatencyMs":  { "type": "double" },
+      "errorCount":    { "type": "long" },
+      "errorRate":     { "type": "double" },
+      "service":       { "type": "keyword" }
+    }
+  }
+}

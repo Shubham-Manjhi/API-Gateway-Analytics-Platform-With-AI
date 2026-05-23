@@ -1,0 +1,26 @@
+{
+  "mappings": {
+    "properties": {
+      "id":            { "type": "keyword" },
+      "timestamp":     { "type": "date", "format": "strict_date_optional_time" },
+      "tenantId":      { "type": "keyword" },
+      "correlationId": { "type": "keyword" },
+      "method":        { "type": "keyword" },
+      "path":          { "type": "keyword" },
+      "host":          { "type": "keyword" },
+      "statusCode":    { "type": "integer" },
+      "latencyMs":     { "type": "long" },
+      "clientIp":      { "type": "ip" },
+      "userAgent":     { "type": "text", "fields": { "keyword": { "type": "keyword" } } },
+      "error":         { "type": "boolean" },
+      "errorMessage":  { "type": "text" },
+      "serviceName":   { "type": "keyword" },
+      "endpoint":      { "type": "keyword" }
+    }
+  },
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "refresh_interval": "5s"
+  }
+}
